@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
+import Button from "@mui/material/Button";
 
 export default function NewPages() {
   const [num] = useState(15);
-  return <main>new Pages {num}</main>;
+  return <Button>Hello</Button>;
 }
