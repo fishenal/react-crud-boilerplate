@@ -1,8 +1,58 @@
-export interface PlayerItem {}
+export type TeamName =
+  | "MEX"
+  | "ARG"
+  | "KSA"
+  | "GHA"
+  | "JPN"
+  | "QAT"
+  | "ECU"
+  | "BRA"
+  | "AUS"
+  | "ESP"
+  | "KOR"
+  | "URU"
+  | "CMR"
+  | "CRC"
+  | "WAL"
+  | "CAN"
+  | "USA"
+  | "ENG"
+  | "POR"
+  | "TUN"
+  | "MAR"
+  | "SUI"
+  | "IRN"
+  | "NED"
+  | "POL"
+  | "CRO"
+  | "SEN"
+  | "BEL"
+  | "GER"
+  | "FRA"
+  | "DEN"
+  | "SRB";
+export interface PlayerItem {
+  position: string;
+  birthDate: string;
+  jerseyNum: number;
+  name: string;
+  picture: string;
+  weight: number;
+  height: number;
+  country: string;
+  age: number;
+}
 
-export interface PlayerListReq {}
+export interface PlayerItemWithID extends PlayerItem {
+  id: string;
+}
+export interface PlayerListReq {
+  team: TeamName;
+}
 
-export interface PlayerAddReq {}
+export interface PlayerAddReq extends PlayerItem {}
 
-export interface PlayerEditReq {}
-export interface PlayerDeleteReq {}
+export interface PlayerEditReq extends PlayerItem {}
+export interface PlayerDeleteReq {
+  id: string;
+}
