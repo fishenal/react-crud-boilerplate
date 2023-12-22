@@ -48,6 +48,8 @@ export interface PlayerItemWithID extends PlayerItem {
 }
 export interface PlayerListReq {
   team: TeamName;
+  page?: string;
+  size?: string;
 }
 
 export interface PlayerAddReq extends PlayerItem {}

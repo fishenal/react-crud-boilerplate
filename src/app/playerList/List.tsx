@@ -20,14 +20,15 @@ import EditModal from "./EditModal";
 // import DetailDrawer from "../../ui-component/detailDrawer/DetailDrawer";
 // import { useNavigate } from "react-router-dom";
 import ListFilter from "./ListFilter";
-import { PlayerItem, PlayerListReq } from "./types";
+import { PlayerItemWithID, PlayerListReq } from "./types";
 import { DataTable, IColsItem } from "@/common/table";
 import { defaultPageSize } from "@/common/table/pageConfig";
 import { IActionMenu } from "@/common/table/ActionMenu";
+import { getPlayers } from "./api/fetchPlayers";
 // import { defaultPageSize } from "ui-component/table/pageConfig";
 // import { IActionMenu } from "ui-component/table/ActionMenu";
 
-const headCells: IColsItem<PlayerItem>[] = [
+const headCells: IColsItem<PlayerItemWithID>[] = [
   {
     id: "mchNo",
     label: "merchant-no",
@@ -57,12 +58,12 @@ const headCells: IColsItem<PlayerItem>[] = [
   // },
 ];
 const PlayerList = () => {
-  const [data, setData] = useState<PlayerItem[]>([]);
+  const [data, setData] = useState<PlayerItemWithID[]>([]);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [openAddDrawer, setOpenAddDrawer] = useState<boolean>(false);
   const [openDetailDrawer, setOpenDetailDrawer] = useState<boolean>(false);
   const [openEditDrawer, setOpenEditDrawer] = useState<boolean>(false);
-  const [focusItem, setFocusItem] = useState<PlayerItem | null>(null);
+  const [focusItem, setFocusItem] = useState<PlayerItemWithID | null>(null);
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(defaultPageSize);
   const [total, setTotal] = useState(0);
@@ -74,10 +75,11 @@ const PlayerList = () => {
   }, [page, size]);
 
   const fetchListData = async () => {
-    // const res = await getPlayerList({
-    //   page,
-    //   size,
-    // });
+    const res = await getPlayers({
+      page: String(page),
+      size: String(size),
+      team: "ARG",
+    });
     // setData(res.data.results);
     // setTotal(res.data.count);
   };
@@ -121,19 +123,19 @@ const PlayerList = () => {
     setOpenModal(false);
   };
 
-  const handleDelete = (row: PlayerItem) => {
+  const handleDelete = (row: PlayerItemWithID) => {
     setFocusItem(row);
     setOpenModal(true);
   };
   const handleAdd = () => {
     setOpenAddDrawer(true);
   };
-  const handleEdit = (row: PlayerItem) => {
+  const handleEdit = (row: PlayerItemWithID) => {
     setFocusItem(row);
     setOpenEditDrawer(true);
   };
 
-  const handleDetail = (row: PlayerItem) => {
+  const handleDetail = (row: PlayerItemWithID) => {
     setFocusItem(row);
     setOpenDetailDrawer(true);
   };
@@ -178,10 +180,10 @@ const PlayerList = () => {
   return (
     <>
       <ListFilter onAction={handleFilterAction} />
-      <DataTable<PlayerItem>
+      <DataTable<PlayerItemWithID>
         data={data}
         cols={headCells}
-        uniKey="mchNo"
+        uniKey="id"
         title={"merchant-list"}
         handleAdd={handleAdd}
         actionMenu={actionMenu}
@@ -218,7 +220,7 @@ const PlayerList = () => {
         refreshList={fetchListData}
         item={focusItem}
       />
-      {/* <DetailDrawer<PlayerItem>
+      {/* <DetailDrawer<PlayerItemWithID>
         open={openDetailDrawer}
         handleClose={() => {
           setOpenDetailDrawer(false);
