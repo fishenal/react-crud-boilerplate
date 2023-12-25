@@ -178,7 +178,7 @@ const PlayerList = () => {
 
   const handleFilterAction = async (values: PlayerListReq) => {
     setPage(0);
-    setSize(5);
+    setSize(defaultPageSize);
     setTeam(values.team);
     // const fixFilterValues: IMerchantInfoParams = Object.fromEntries(
     //   Object.entries(values).filter(([_, v]) => v !== "")

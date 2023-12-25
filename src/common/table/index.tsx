@@ -75,23 +75,7 @@ export const DataTable: <ItemInterface>(
   };
 
   return (
-    <Card
-      content={false}
-      title={title}
-      secondary={
-        <Tooltip title={"add-title"}>
-          <Button
-            variant="contained"
-            size="small"
-            color="secondary"
-            onClick={handleAdd}
-            // endIcon={<AddIcon />}
-          >
-            add
-          </Button>
-        </Tooltip>
-      }
-    >
+    <Card>
       {/* table */}
       <TableContainer>
         <Table sx={{ minWidth: 750 }} stickyHeader>
