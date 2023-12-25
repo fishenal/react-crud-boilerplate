@@ -108,7 +108,7 @@ export const DataTable: <ItemInterface>(
               ))}
               {actionMenu.length > 0 && (
                 <StyledTableCell key="action" align="center">
-                  "action"
+                  Action
                 </StyledTableCell>
               )}
             </StyledTableRow>

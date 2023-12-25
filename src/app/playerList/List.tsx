@@ -20,29 +20,62 @@ import EditModal from "./EditModal";
 // import DetailDrawer from "../../ui-component/detailDrawer/DetailDrawer";
 // import { useNavigate } from "react-router-dom";
 import ListFilter from "./ListFilter";
-import { PlayerItemWithID, PlayerListReq } from "./types";
+import { PlayerItemWithID, PlayerListReq, TeamName } from "./types";
 import { DataTable, IColsItem } from "@/common/table";
 import { defaultPageSize } from "@/common/table/pageConfig";
 import { IActionMenu } from "@/common/table/ActionMenu";
 import { getPlayers } from "./api/fetchPlayers";
+import { TeamOptions } from "@/data/teamOptions";
 // import { defaultPageSize } from "ui-component/table/pageConfig";
 // import { IActionMenu } from "ui-component/table/ActionMenu";
 
 const headCells: IColsItem<PlayerItemWithID>[] = [
   {
-    id: "mchNo",
-    label: "merchant-no",
+    id: "country",
+    label: "Country",
+    align: "left",
+    cellRender: (row) => {
+      return row.country;
+    },
+  },
+  {
+    id: "name",
+    label: "Name",
     align: "left",
     cellRender: (row) => {
       return row.name;
     },
   },
   {
-    id: "name",
-    label: "merchant-name",
+    id: "position",
+    label: "Position",
     align: "left",
     cellRender: (row) => {
-      return `${row.name}`;
+      return `${row.position}`;
+    },
+  },
+  {
+    id: "jerseyNum",
+    label: "Jersey Num",
+    align: "left",
+    cellRender: (row) => {
+      return `${row.jerseyNum}`;
+    },
+  },
+  {
+    id: "birthDate",
+    label: "Birth",
+    align: "left",
+    cellRender: (row) => {
+      return `${row.birthDate}`;
+    },
+  },
+  {
+    id: "heightWeight",
+    label: "Height/Weight",
+    align: "left",
+    cellRender: (row) => {
+      return `${row.height}/${row.weight}`;
     },
   },
   // {
@@ -67,20 +100,22 @@ const PlayerList = () => {
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(defaultPageSize);
   const [total, setTotal] = useState(0);
+  const [team, setTeam] = useState<TeamName>(TeamOptions[0].value);
   // const dispatch = useDispatch();
   // const navigate = useNavigate();
 
   useEffect(() => {
     fetchListData();
-  }, [page, size]);
+  }, [page, size, team]);
 
   const fetchListData = async () => {
     const res = await getPlayers({
       page: String(page),
       size: String(size),
-      team: "ARG",
+      team,
     });
-    // setData(res.data.results);
+    console.log("🚀 ~ file: List.tsx:83 ~ fetchListData ~ res:", res);
+    setData(res[team]);
     // setTotal(res.data.count);
   };
 
@@ -143,6 +178,7 @@ const PlayerList = () => {
   const handleFilterAction = async (values: PlayerListReq) => {
     setPage(0);
     setSize(5);
+    setTeam(values.team);
     // const fixFilterValues: IMerchantInfoParams = Object.fromEntries(
     //   Object.entries(values).filter(([_, v]) => v !== "")
     // );
@@ -184,7 +220,7 @@ const PlayerList = () => {
         data={data}
         cols={headCells}
         uniKey="id"
-        title={"merchant-list"}
+        title={"Player List"}
         handleAdd={handleAdd}
         actionMenu={actionMenu}
         page={page}

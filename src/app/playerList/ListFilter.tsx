@@ -3,6 +3,7 @@ import { object, string } from "yup";
 import { useFormik } from "formik";
 import { PlayerListReq } from "./types";
 import CommonForm, { IField } from "@/common/form";
+import { TeamOptions } from "@/data/teamOptions";
 
 // project imports
 // import { PlayerListReq } from 'apis/merchant'
@@ -14,8 +15,7 @@ interface IProps {
 }
 
 const validationSchema = object({
-  name: string().trim().max(80),
-  mchNo: string().trim().max(30),
+  team: string().trim().max(80),
 });
 
 // ==============================|| KANBAN BACKLOGS - ADD STORY ||============================== //
@@ -23,20 +23,16 @@ const validationSchema = object({
 const ListFilter = ({ onAction }: IProps) => {
   const formik = useFormik<PlayerListReq>({
     initialValues: {
-      name: "",
-      mchNo: "",
+      team: TeamOptions[0].value,
     },
     validationSchema,
     onSubmit: onAction,
   });
   const fields: IField<PlayerListReq>[] = [
     {
-      key: "name",
-      type: "input",
-    },
-    {
-      key: "mchNo",
-      type: "input",
+      key: "team",
+      type: "select",
+      option: TeamOptions,
     },
   ];
   return (
