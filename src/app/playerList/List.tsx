@@ -26,6 +26,7 @@ import { defaultPageSize } from "@/common/table/pageConfig";
 import { IActionMenu } from "@/common/table/ActionMenu";
 import { getPlayers } from "./api/fetchPlayers";
 import { TeamOptions } from "@/data/teamOptions";
+import dayjs from "dayjs";
 // import { defaultPageSize } from "ui-component/table/pageConfig";
 // import { IActionMenu } from "ui-component/table/ActionMenu";
 
@@ -67,7 +68,7 @@ const headCells: IColsItem<PlayerItemWithID>[] = [
     label: "Birth",
     align: "left",
     cellRender: (row) => {
-      return `${row.birthDate}`;
+      return dayjs(row.birthDate).format("YYYY-MM-DD");
     },
   },
   {
