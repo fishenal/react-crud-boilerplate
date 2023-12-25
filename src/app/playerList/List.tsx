@@ -5,7 +5,7 @@
 //   deleteMerchant,
 //   getMerchantList,
 // } from "apis/merchant";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 // import { useDispatch } from "store";
 // project imports
 // import { openSnackbar } from "store/slices/snackbar";
@@ -104,20 +104,21 @@ const PlayerList = () => {
   // const dispatch = useDispatch();
   // const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchListData();
-  }, [page, size, team]);
-
-  const fetchListData = async () => {
+  const fetchListData = useCallback(async () => {
     const res = await getPlayers({
       page: String(page),
       size: String(size),
       team,
     });
-    console.log("🚀 ~ file: List.tsx:83 ~ fetchListData ~ res:", res);
-    setData(res[team]);
-    // setTotal(res.data.count);
-  };
+    if (res.status === 200) {
+      setData(res.data);
+      setTotal(res.total);
+    }
+  }, [page, size, team]);
+
+  useEffect(() => {
+    fetchListData();
+  }, [page, size, team, fetchListData]);
 
   const deleteItem = async () => {
     // if (focusItem?.mchNo) {
