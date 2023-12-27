@@ -8,30 +8,18 @@ import {
   FormHelperText,
   FormLabel,
   Checkbox,
+  FormControl,
 } from "@mui/material";
 // project imports
 import { ReactElement, ReactNode } from "react";
 import { red } from "@mui/material/colors";
 import { FormikProps } from "formik";
-import { OptionObj, RangeDate, RangeNum } from "./types";
-import { ComponentRangeNum } from "./RangeNum";
+import { OptionObj } from "./types";
 import { BootstrapInput } from "./BootstrapInput";
-import { CustomerDatePicker } from "./CustomerDatePicker";
-import { CustomerFormControl } from "./CustomerFormControl";
-import { ComponentRangeDate } from "./RangeDate";
 
 export interface IField<ItemInterface = { [key: string]: string }> {
   key: keyof ItemInterface;
-  type:
-    | "input"
-    | "textarea"
-    | "radio"
-    | "date"
-    | "attachment"
-    | "select"
-    | "mul-select"
-    | "rangeNum"
-    | "rangeDate";
+  type: "input" | "textarea" | "select" | "mul-select";
   option?: OptionObj[];
   required?: boolean;
 }
@@ -79,7 +67,7 @@ const CommonForm: <ItemInterface = { [key: string]: string }>(
           if (item.type === "input" || item.type === "textarea") {
             return (
               <Grid item xs={gridValue} key={stringLabelKey}>
-                <CustomerFormControl
+                <FormControl
                   variant="standard"
                   required={item.required}
                   error={error}
@@ -98,112 +86,15 @@ const CommonForm: <ItemInterface = { [key: string]: string }>(
                   <FormHelperText error={error}>
                     <>{error && formik.errors[labelKey]}</>
                   </FormHelperText>
-                </CustomerFormControl>
+                </FormControl>
               </Grid>
             );
           }
-          if (item.type === "rangeNum") {
-            return (
-              <Grid item xs={gridValue} key={stringLabelKey}>
-                <CustomerFormControl
-                  variant="standard"
-                  required={item.required}
-                  error={error}
-                  fullWidth
-                >
-                  {renderFormLabel(stringLabelKey)}
-                  <ComponentRangeNum
-                    value={formik.values[labelKey] as RangeNum}
-                    onChange={(value) => {
-                      formik.setFieldValue(stringLabelKey, value, true);
-                    }}
-                  />
-                  <FormHelperText error={error}>
-                    <>
-                      {error &&
-                        Object.values(
-                          formik.errors[labelKey] as Record<string, string>
-                        ).map((msg) => {
-                          return <div key="msg">{msg}</div>;
-                        })}
-                    </>
-                  </FormHelperText>
-                </CustomerFormControl>
-              </Grid>
-            );
-          }
-          // if (item.type === 'rangeDate') {
-          //     return (
-          //         <Grid item xs={gridValue} key={stringLabelKey}>
-          //             <CustomerFormControl
-          //                 variant="standard"
-          //                 required={item.required}
-          //                 error={error}
-          //                 fullWidth
-          //             >
-          //                 {renderFormLabel(stringLabelKey)}
-          //                 <ComponentRangeDate
-          //                     value={
-          //                         formik.values[
-          //                             labelKey
-          //                         ] as RangeDate
-          //                     }
-          //                     onChange={(value) => {
-          //                         const rangeDate = value
 
-          //                         formik.setFieldValue(
-          //                             stringLabelKey,
-          //                             rangeDate,
-          //                             true
-          //                         )
-          //                     }}
-          //                 />
-          //                 <FormHelperText error={error}>
-          //                     <>
-          //                         {error &&
-          //                             formik.errors[labelKey]}
-          //                     </>
-          //                 </FormHelperText>
-          //             </CustomerFormControl>
-          //         </Grid>
-          //     )
-          // }
-          // if (item.type === 'date') {
-          //     return (
-          //         <Grid item xs={gridValue} key={stringLabelKey}>
-          //             <CustomerFormControl
-          //                 variant="standard"
-          //                 required={item.required}
-          //                 error={error}
-          //                 fullWidth
-          //             >
-          //                 {renderFormLabel(stringLabelKey)}
-          //                 <CustomerDatePicker
-          //                     reduceAnimations
-          //                     value={formik.values[labelKey]}
-          //                     format="yyyy-MM-dd"
-          //                     onChange={(date) => {
-          //                         formik.setFieldValue(
-          //                             stringLabelKey,
-          //                             date,
-          //                             true
-          //                         )
-          //                     }}
-          //                 />
-          //                 <FormHelperText error={error}>
-          //                     <>
-          //                         {error &&
-          //                             formik.errors[labelKey]}
-          //                     </>
-          //                 </FormHelperText>
-          //             </CustomerFormControl>
-          //         </Grid>
-          //     )
-          // }
           if (item.type === "select") {
             return (
               <Grid item xs={gridValue} key={stringLabelKey}>
-                <CustomerFormControl
+                <FormControl
                   variant="standard"
                   required={item.required}
                   error={error}
@@ -232,14 +123,14 @@ const CommonForm: <ItemInterface = { [key: string]: string }>(
                   <FormHelperText error={error}>
                     <>{error && formik.errors[labelKey]}</>
                   </FormHelperText>
-                </CustomerFormControl>
+                </FormControl>
               </Grid>
             );
           }
           if (item.type === "mul-select") {
             return (
               <Grid item xs={gridValue} key={stringLabelKey}>
-                <CustomerFormControl
+                <FormControl
                   variant="standard"
                   required={item.required}
                   error={error}
@@ -278,7 +169,7 @@ const CommonForm: <ItemInterface = { [key: string]: string }>(
                   <FormHelperText error={error}>
                     <>{error && formik.errors[labelKey]}</>
                   </FormHelperText>
-                </CustomerFormControl>
+                </FormControl>
               </Grid>
             );
           }
@@ -299,14 +190,13 @@ const CommonForm: <ItemInterface = { [key: string]: string }>(
           )}
           <Button
             variant="outlined"
-            color="secondary"
             onClick={() => {
               formik.resetForm();
             }}
           >
             Reset
           </Button>
-          <Button variant="contained" color="secondary" type="submit">
+          <Button variant="contained" type="submit">
             Search
           </Button>
         </Grid>

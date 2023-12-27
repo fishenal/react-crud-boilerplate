@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import { PlayerListReq } from "./types";
 import CommonForm, { IField } from "@/common/form";
 import { TeamOptions } from "@/data/teamOptions";
+import { Box } from "@mui/material";
 
 // project imports
 // import { PlayerListReq } from 'apis/merchant'
@@ -36,14 +37,14 @@ const ListFilter = ({ onAction }: IProps) => {
     },
   ];
   return (
-    <div title="Filter">
+    <Box sx={{ py: 2 }}>
       <CommonForm<PlayerListReq>
         fields={fields}
         formik={formik}
         title=""
         gridValue={4}
       />
-    </div>
+    </Box>
   );
 };
 export default ListFilter;

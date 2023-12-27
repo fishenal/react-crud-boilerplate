@@ -14,7 +14,7 @@ import AlertDelete from "./AlertDelete";
 import AddModal from "./AddModal";
 // import { FormattedMessage } from "react-intl";
 // import { fixDateString } from "utils/utils";
-import { IconButton, Tooltip } from "@mui/material";
+import { Divider, IconButton, Tooltip } from "@mui/material";
 
 import EditModal from "./EditModal";
 // import DetailDrawer from "../../ui-component/detailDrawer/DetailDrawer";
@@ -218,6 +218,7 @@ const PlayerList = () => {
   return (
     <>
       <ListFilter onAction={handleFilterAction} />
+      <Divider />
       <DataTable<PlayerItemWithID>
         data={data}
         cols={headCells}

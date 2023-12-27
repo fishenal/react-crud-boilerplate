@@ -21,7 +21,6 @@ import {
 // assets
 
 import { defaultPageSize, pageSizeArr } from "./pageConfig";
-import { StyledTableCell, StyledTableRow } from "./CustomerTable";
 import { ActionMenu, IActionMenu } from "./ActionMenu";
 
 // ==============================|| TABLE - DATA TABLE ||============================== //
@@ -80,56 +79,56 @@ export const DataTable: <ItemInterface>(
       <TableContainer>
         <Table sx={{ minWidth: 750 }} stickyHeader>
           <TableHead>
-            <StyledTableRow>
+            <TableRow>
               {cols.map((col) => (
-                <StyledTableCell
+                <TableCell
                   key={col.id}
                   align={col.align}
                   sx={{ whiteSpace: "nowrap" }}
                 >
                   {col.label}
-                </StyledTableCell>
+                </TableCell>
               ))}
               {actionMenu.length > 0 && (
-                <StyledTableCell key="action" align="center">
+                <TableCell key="action" align="center">
                   Action
-                </StyledTableCell>
+                </TableCell>
               )}
-            </StyledTableRow>
+            </TableRow>
           </TableHead>
           <TableBody>
             {data.map((row) => {
               return (
-                <StyledTableRow hover key={row[uniKey] as string}>
+                <TableRow hover key={row[uniKey] as string}>
                   {cols.map((col) => {
                     return (
-                      <StyledTableCell align={col.align} key={col.id}>
+                      <TableCell align={col.align} key={col.id}>
                         {col.cellRender(row)}
-                      </StyledTableCell>
+                      </TableCell>
                     );
                   })}
 
                   {actionMenu.length > 0 && (
-                    <StyledTableCell align="center">
+                    <TableCell align="center">
                       <ActionMenu actionMenu={actionMenu} row={row} />
-                    </StyledTableCell>
+                    </TableCell>
                   )}
-                </StyledTableRow>
+                </TableRow>
               );
             })}
             {data.length === 0 && (
-              <StyledTableRow
+              <TableRow
                 style={{
                   height: 50,
                 }}
               >
-                <StyledTableCell align="center" colSpan={cols.length}>
+                <TableCell align="center" colSpan={cols.length}>
                   <Box sx={{ py: 5 }}>
                     {/* <FindInPageIcon fontSize="large" */}
                     <Typography variant="h4">Empty</Typography>
                   </Box>
-                </StyledTableCell>
-              </StyledTableRow>
+                </TableCell>
+              </TableRow>
             )}
           </TableBody>
         </Table>
