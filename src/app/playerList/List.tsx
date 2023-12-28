@@ -24,9 +24,10 @@ import { PlayerItemWithID, PlayerListReq, TeamName } from "./types";
 import { DataTable, IColsItem } from "@/common/table";
 import { defaultPageSize } from "@/common/table/pageConfig";
 import { IActionMenu } from "@/common/table/ActionMenu";
-import { getPlayers } from "./api/fetchPlayers";
+import { deletePlayer, getPlayers } from "./api/playersActions";
 import { TeamOptions } from "@/data/teamOptions";
 import dayjs from "dayjs";
+import DetailDrawer from "@/common/detailDrawer/DetailDrawer";
 // import { defaultPageSize } from "ui-component/table/pageConfig";
 // import { IActionMenu } from "ui-component/table/ActionMenu";
 
@@ -122,38 +123,38 @@ const PlayerList = () => {
   }, [page, size, team, fetchListData]);
 
   const deleteItem = async () => {
-    // if (focusItem?.mchNo) {
-    // const res = await deleteMerchant({
-    //   mchNo: focusItem.mchNo,
-    // });
-    // setOpenModal(false);
-    // if (res && res.code === 0) {
-    // dispatch(
-    //   openSnackbar({
-    //     open: true,
-    //     message: success",
-    //     variant: "alert",
-    //     alert: {
-    //       color: "success",
-    //     },
-    //     close: false,
-    //   })
-    // );
-    // fetchListData();
-    //} else {
-    // dispatch(
-    //   openSnackbar({
-    //     open: true,
-    //     message: fail",
-    //     variant: "alert",
-    //     alert: {
-    //       color: "error",
-    //     },
-    //     close: true,
-    //   })
-    // );
-    // }
-    // }
+    if (focusItem?.id) {
+      const res = await deletePlayer({
+        id: focusItem.id,
+      });
+      setOpenModal(false);
+      if (res && res.code === 0) {
+        // dispatch(
+        //   openSnackbar({
+        //     open: true,
+        //     message: success",
+        //     variant: "alert",
+        //     alert: {
+        //       color: "success",
+        //     },
+        //     close: false,
+        //   })
+        // );
+        fetchListData();
+      } else {
+        // dispatch(
+        //   openSnackbar({
+        //     open: true,
+        //     message: fail",
+        //     variant: "alert",
+        //     alert: {
+        //       color: "error",
+        //     },
+        //     close: true,
+        //   })
+        // );
+      }
+    }
   };
 
   const handleModalClose = () => {
@@ -196,21 +197,23 @@ const PlayerList = () => {
 
   const actionMenu: IActionMenu[] = [
     {
-      label: "delete",
+      label: "Delete",
       action: handleDelete,
     },
     {
-      label: "edit",
+      label: "Edit",
       action: handleEdit,
     },
     {
-      label: "detail",
+      label: "Detail",
       action: handleDetail,
     },
     {
-      label: "merchant-app-list",
+      label: "Open Avatar",
       action: (row) => {
-        // navigate(`/app/list/${row.mchNo}`);
+        if (row.picture) {
+          window.open(row.picture);
+        }
       },
     },
   ];
@@ -259,13 +262,13 @@ const PlayerList = () => {
         refreshList={fetchListData}
         item={focusItem}
       />
-      {/* <DetailDrawer<PlayerItemWithID>
+      <DetailDrawer<PlayerItemWithID>
         open={openDetailDrawer}
         handleClose={() => {
           setOpenDetailDrawer(false);
         }}
         item={focusItem}
-      /> */}
+      />
     </>
   );
 };

@@ -18,10 +18,12 @@ export default function DashboardLayout({
       </AppBar>
       <Box component="main" sx={{ py: 3, pr: 3 }}>
         <Grid container spacing={2}>
-          <Grid xs={2}>
+          <Grid item xs={2}>
             <SideNav />
           </Grid>
-          <Grid xs={10}>{children}</Grid>
+          <Grid item xs={10}>
+            {children}
+          </Grid>
         </Grid>
       </Box>
     </Box>

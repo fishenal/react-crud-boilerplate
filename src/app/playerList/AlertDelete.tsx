@@ -36,16 +36,15 @@ export default function AlertDelete({
     >
       {open && (
         <>
-          <DialogTitle id="item-delete-title">delete-title</DialogTitle>
+          <DialogTitle id="item-delete-title">Delete Check</DialogTitle>
           <DialogContent>
             <DialogContentText id="item-delete-description">
-              delete-desc
-              {title || null}
+              {`Are you sure to Delete "${title}"`}
             </DialogContentText>
           </DialogContent>
           <DialogActions sx={{ mr: 2 }}>
             <Button onClick={() => handleClose()} color="error">
-              cancel
+              Cancel
             </Button>
             <Button
               variant="contained"
@@ -53,7 +52,7 @@ export default function AlertDelete({
               onClick={deleteAction}
               autoFocus
             >
-              delete
+              Delete
             </Button>
           </DialogActions>
         </>

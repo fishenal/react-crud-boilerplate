@@ -49,7 +49,11 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  return {
-    req: "delete",
-  };
+  return NextResponse.json({
+    status: 200,
+    data: {
+      code: Math.random() > 0.5 ? 0 : 500,
+      message: "success",
+    },
+  });
 }

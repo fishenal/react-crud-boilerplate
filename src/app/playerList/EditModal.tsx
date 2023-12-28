@@ -8,14 +8,14 @@ import { useFormik } from "formik";
 // import { IEditMerchant, IMerchantItem, editMerchant } from 'apis/merchant'
 // import FormModal from 'ui-component/formModal'
 import { useMemo } from "react";
-import { PlayerEditReq, PlayerItem } from "./types";
+import { PlayerEditReq, PlayerItemWithID } from "./types";
 import { IField } from "@/common/form";
 import FormModal from "@/common/formModal";
 // import { IField } from 'ui-component/form'
 
 interface IProps {
   open: boolean;
-  item: PlayerItem;
+  item: PlayerItemWithID;
   handleDrawerClose: () => void;
   refreshList: () => void;
 }
