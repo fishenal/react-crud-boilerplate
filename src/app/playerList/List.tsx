@@ -5,7 +5,7 @@
 //   deleteMerchant,
 //   getMerchantList,
 // } from "apis/merchant";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 // import { useDispatch } from "store";
 // project imports
 // import { openSnackbar } from "store/slices/snackbar";
@@ -28,6 +28,7 @@ import { deletePlayer, getPlayers } from "./api/playersActions";
 import { TeamOptions } from "@/data/teamOptions";
 import dayjs from "dayjs";
 import DetailDrawer from "@/common/detailDrawer/DetailDrawer";
+import { SnackBarContext } from "@/common/snackBarContext/snackBarContext";
 // import { defaultPageSize } from "ui-component/table/pageConfig";
 // import { IActionMenu } from "ui-component/table/ActionMenu";
 
@@ -80,17 +81,6 @@ const headCells: IColsItem<PlayerItemWithID>[] = [
       return `${row.height}/${row.weight}`;
     },
   },
-  // {
-  //     id: 'status',
-  //     label: status",
-  //     cellRender: (row) => {
-  //         return row.isActive ? (
-  //             is-active"
-  //         ) : (
-  //             not-active"
-  //         )
-  //     },
-  // },
 ];
 const PlayerList = () => {
   const [data, setData] = useState<PlayerItemWithID[]>([]);
@@ -103,8 +93,7 @@ const PlayerList = () => {
   const [size, setSize] = useState(defaultPageSize);
   const [total, setTotal] = useState(0);
   const [team, setTeam] = useState<TeamName>(TeamOptions[0].value);
-  // const dispatch = useDispatch();
-  // const navigate = useNavigate();
+  const { handleOpen: handleSnackbarOpen } = useContext(SnackBarContext);
 
   const fetchListData = useCallback(async () => {
     const res = await getPlayers({
@@ -128,31 +117,17 @@ const PlayerList = () => {
         id: focusItem.id,
       });
       setOpenModal(false);
-      if (res && res.code === 0) {
-        // dispatch(
-        //   openSnackbar({
-        //     open: true,
-        //     message: success",
-        //     variant: "alert",
-        //     alert: {
-        //       color: "success",
-        //     },
-        //     close: false,
-        //   })
-        // );
+      if (res && res.data && res.data.code === 0) {
+        handleSnackbarOpen({
+          message: "Delete Success!",
+          severity: "success",
+        });
         fetchListData();
       } else {
-        // dispatch(
-        //   openSnackbar({
-        //     open: true,
-        //     message: fail",
-        //     variant: "alert",
-        //     alert: {
-        //       color: "error",
-        //     },
-        //     close: true,
-        //   })
-        // );
+        handleSnackbarOpen({
+          message: "Delete Fail!",
+          severity: "error",
+        });
       }
     }
   };
