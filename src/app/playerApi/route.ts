@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
       Number(page) * Number(size),
       Number(page) * Number(size) + Number(size)
     )
-    .map((data) => ({
+    .map((data: Record<string, string>) => ({
       ...data,
       id: uuidv4(),
     }));
