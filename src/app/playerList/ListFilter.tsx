@@ -6,11 +6,6 @@ import CommonForm, { IField } from "@/common/form";
 import { TeamOptions } from "@/data/teamOptions";
 import { Box } from "@mui/material";
 
-// project imports
-// import { PlayerListReq } from 'apis/merchant'
-// import CommonForm, { IField } from 'ui-component/form'
-// import MainCard from 'ui-component/cards/MainCard'
-
 interface IProps {
   onAction: (values: PlayerListReq) => void;
 }
@@ -18,8 +13,6 @@ interface IProps {
 const validationSchema = object({
   team: string().trim().max(80),
 });
-
-// ==============================|| KANBAN BACKLOGS - ADD STORY ||============================== //
 
 const ListFilter = ({ onAction }: IProps) => {
   const formik = useFormik<PlayerListReq>({

@@ -17,8 +17,6 @@ interface Props {
   deleteAction: () => void;
 }
 
-// ==============================|| KANBAN BACKLOGS - STORY DELETE ||============================== //
-
 export default function AlertDelete({
   title,
   open,

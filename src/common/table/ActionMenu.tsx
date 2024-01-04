@@ -4,7 +4,6 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-// ==============================|| TABLE - DATA TABLE ||============================== //
 export interface IActionMenu {
   label: ReactNode;
   action: (row: any) => void;

@@ -1,24 +1,8 @@
-// material-ui
-// import {
-//   IMerchantInfoParams,
-//   IMerchantItem,
-//   deleteMerchant,
-//   getMerchantList,
-// } from "apis/merchant";
 import { useCallback, useContext, useEffect, useState } from "react";
-// import { useDispatch } from "store";
-// project imports
-// import { openSnackbar } from "store/slices/snackbar";
-// import { DataTable, IColsItem } from "ui-component/table";
 import AlertDelete from "./AlertDelete";
 import AddModal from "./AddModal";
-// import { FormattedMessage } from "react-intl";
-// import { fixDateString } from "utils/utils";
-import { Divider, IconButton, Tooltip } from "@mui/material";
-
+import { Divider } from "@mui/material";
 import EditModal from "./EditModal";
-// import DetailDrawer from "../../ui-component/detailDrawer/DetailDrawer";
-// import { useNavigate } from "react-router-dom";
 import ListFilter from "./ListFilter";
 import { PlayerItemWithID, PlayerListReq, TeamName } from "./types";
 import { DataTable, IColsItem } from "@/common/table";
@@ -29,8 +13,6 @@ import { TeamOptions } from "@/data/teamOptions";
 import dayjs from "dayjs";
 import DetailDrawer from "@/common/detailDrawer/DetailDrawer";
 import { SnackBarContext } from "@/common/snackBarContext/snackBarContext";
-// import { defaultPageSize } from "ui-component/table/pageConfig";
-// import { IActionMenu } from "ui-component/table/ActionMenu";
 
 const headCells: IColsItem<PlayerItemWithID>[] = [
   {
@@ -157,17 +139,6 @@ const PlayerList = () => {
     setPage(0);
     setSize(defaultPageSize);
     setTeam(values.team);
-    // const fixFilterValues: IMerchantInfoParams = Object.fromEntries(
-    //   Object.entries(values).filter(([_, v]) => v !== "")
-    // );
-
-    // const res = await getPlayerList({
-    //   page,
-    //   size,
-    //   ...fixFilterValues,
-    // });
-    // setData(res.data.results);
-    // setTotal(res.data.count);
   };
 
   const actionMenu: IActionMenu[] = [

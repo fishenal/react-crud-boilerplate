@@ -35,8 +35,6 @@ interface IProps<ItemInterface> {
   submitErrorMsg?: string;
 }
 
-// ==============================|| KANBAN BACKLOGS - ADD STORY ||============================== //
-
 const CommonForm: <ItemInterface = { [key: string]: string }>(
   props: IProps<ItemInterface>
 ) => ReactElement = ({

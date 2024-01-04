@@ -4,7 +4,6 @@ import { Box, Drawer } from "@mui/material";
 // project imports
 import { ReactElement, ReactNode } from "react";
 import CommonForm, { IField } from "../form";
-// import CommonForm, { IField } from 'ui-component/form'
 
 interface IProps {
   open: boolean;
@@ -14,8 +13,6 @@ interface IProps {
   title: ReactNode;
   buttonLabel?: ReactNode;
 }
-
-// ==============================|| KANBAN BACKLOGS - ADD STORY ||============================== //
 
 const FormModal: (props: IProps) => ReactElement = ({
   open,

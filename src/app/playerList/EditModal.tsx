@@ -1,14 +1,8 @@
 // third party
 import { object, string, boolean } from "yup";
 import { useFormik } from "formik";
-
-// project imports
-// import { openSnackbar } from 'store/slices/snackbar'
-// import { useDispatch } from 'store'
-// import { IEditMerchant, IMerchantItem, editMerchant } from 'apis/merchant'
-// import FormModal from 'ui-component/formModal'
 import { useContext, useMemo } from "react";
-import { PlayerEditReq, PlayerItemWithID } from "./types";
+import { PlayerItemWithID } from "./types";
 import { IField } from "@/common/form";
 import FormModal from "@/common/formModal";
 import { validationSchema } from "./AddModal";
@@ -16,7 +10,6 @@ import { TeamOptions } from "@/data/teamOptions";
 import dayjs from "dayjs";
 import { editPlayer } from "./api/playersActions";
 import { SnackBarContext } from "@/common/snackBarContext/snackBarContext";
-// import { IField } from 'ui-component/form'
 
 interface IProps {
   open: boolean;
