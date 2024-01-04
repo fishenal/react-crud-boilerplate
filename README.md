@@ -2,7 +2,7 @@
 This is a boilerplate(or template, or scaffold) design for a easy CRUD admin web system.It can help you quick start your project.
 
 # Screenshot
-[See screenshots](https://github.com/fishenal/react-crud-boilerplate/blob/main/demoImages/)
+[See screenshots](https://github.com/fishenal/react-crud-boilerplate/blob/main/screenshots/)
 
 ## Depend Techs
 - This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
