@@ -47,7 +47,7 @@ export async function POST(request: Request) {
   });
 }
 
-export async function PUT(request: Request) {
+export async function PUT(request: NextRequest) {
   const success = Math.random() > 0.5;
   return NextResponse.json({
     status: 200,

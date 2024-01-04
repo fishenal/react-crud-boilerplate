@@ -16,9 +16,8 @@ interface Props {
   refreshList: () => void;
 }
 
-const validationSchema = object({
+export const validationSchema = object({
   position: string().trim().max(80).required(),
-  birthDate: string().trim().max(80).required(),
   jerseyNum: number().max(1000).required(),
   name: string().trim().max(100).required(),
   picture: string().trim().max(100).required(),
@@ -117,7 +116,7 @@ const AddModal = ({ open, handleDrawerClose, refreshList }: Props) => {
     <FormModal
       fields={fields}
       formik={formik}
-      title={"Add Player"}
+      title="Add Player"
       open={open}
       buttonLabel="Add"
       handleDrawerClose={handleDrawerClose}

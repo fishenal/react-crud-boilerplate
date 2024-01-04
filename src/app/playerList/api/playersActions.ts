@@ -49,7 +49,7 @@ export async function addPlayer(params: PlayerAddReq) {
 }
 
 export async function editPlayer(params: PlayerEditReq) {
-  const res = await fetch(`/playerApi/${params.id}`, {
+  const res = await fetch(`/playerApi`, {
     method: "PUT",
     body: JSON.stringify(params),
   });

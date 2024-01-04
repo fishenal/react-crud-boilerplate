@@ -1,3 +1,5 @@
+import { Dayjs } from "dayjs";
+
 export type TeamName =
   | "MEX"
   | "ARG"
@@ -33,7 +35,7 @@ export type TeamName =
   | "SRB";
 export interface PlayerItem {
   position: string;
-  birthDate: string;
+  birthDate: string | Dayjs;
   jerseyNum: number;
   name: string;
   picture: string;

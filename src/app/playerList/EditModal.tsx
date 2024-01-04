@@ -7,10 +7,15 @@ import { useFormik } from "formik";
 // import { useDispatch } from 'store'
 // import { IEditMerchant, IMerchantItem, editMerchant } from 'apis/merchant'
 // import FormModal from 'ui-component/formModal'
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { PlayerEditReq, PlayerItemWithID } from "./types";
 import { IField } from "@/common/form";
 import FormModal from "@/common/formModal";
+import { validationSchema } from "./AddModal";
+import { TeamOptions } from "@/data/teamOptions";
+import dayjs from "dayjs";
+import { editPlayer } from "./api/playersActions";
+import { SnackBarContext } from "@/common/snackBarContext/snackBarContext";
 // import { IField } from 'ui-component/form'
 
 interface IProps {
@@ -20,118 +25,110 @@ interface IProps {
   refreshList: () => void;
 }
 
-const validationSchema = object({
-  name: string().trim().max(80).required(),
-  shortName: string().trim().max(30).required(),
-  isActive: boolean(),
-  contactName: string().trim().max(100).required(),
-  contactTel: string().trim().max(30).required(),
-  contactEmail: string().trim().email(),
-  remark: string().trim().max(1000),
-});
-
-// ==============================|| KANBAN BACKLOGS - ADD STORY ||============================== //
-
 const EditModal = ({ open, handleDrawerClose, refreshList, item }: IProps) => {
-  // const dispatch = useDispatch()
+  const { handleOpen: handleSnackbarOpen } = useContext(SnackBarContext);
   const initialValues = useMemo(
     () => ({
-      name: item?.name || "",
-      shortName: item?.shortName || "",
-      isActive: item?.isActive || true,
-      contactName: item?.contactName || "",
-      contactTel: item?.contactTel || "",
-      contactEmail: item?.contactEmail || "",
-      remark: item?.remark || "",
+      position: item.position,
+      birthDate: dayjs(item.birthDate),
+      jerseyNum: item.jerseyNum,
+      name: item.name,
+      picture: item.picture,
+      weight: item.weight,
+      height: item.height,
+      country: item.country,
+      age: item.age,
+      id: item.id,
     }),
     [item]
   );
-  const formik = useFormik<PlayerEditReq>({
+  const formik = useFormik<PlayerItemWithID>({
     enableReinitialize: true,
     initialValues,
     validationSchema,
     onSubmit: async (values) => {
-      // if (item?.mchNo) {
-      //     const res = await editMerchant(item.mchNo, values)
-      //     if (res && res?.code === 0) {
-      //         dispatch(
-      //             openSnackbar({
-      //                 open: true,
-      //                 message: <FormattedMessage id="success" />,
-      //                 variant: 'alert',
-      //                 alert: {
-      //                     color: 'success',
-      //                 },
-      //                 close: false,
-      //             })
-      //         )
-      //         handleDrawerClose()
-      //         refreshList()
-      //     } else {
-      //         // TODO: fix all type of snackbar
-      //         dispatch(
-      //             openSnackbar({
-      //                 open: true,
-      //                 message: <FormattedMessage id="fail" />,
-      //                 variant: 'alert',
-      //                 alert: {
-      //                     color: 'error',
-      //                 },
-      //                 close: true,
-      //             })
-      //         )
-      //     }
-      // }
+      const params = {
+        ...values,
+        birthDate: dayjs(values.birthDate).format("YYYY-MM-DD"),
+      };
+      const res = await editPlayer(params);
+      if (res.code === 0) {
+        handleSnackbarOpen({
+          message: "Add Success!",
+          severity: "success",
+        });
+        handleDrawerClose();
+        refreshList();
+      } else {
+        handleSnackbarOpen({
+          message: "Add Failed!",
+          severity: "error",
+        });
+      }
     },
   });
   const fields: IField[] = useMemo(() => {
     const fld: IField[] = [
       {
+        key: "position",
+        label: "Position",
+        type: "input",
+      },
+      {
+        key: "country",
+        label: "Country",
+        type: "select",
+        option: TeamOptions,
+      },
+      {
+        key: "birthDate",
+        label: "BirthDate",
+        type: "date",
+      },
+      {
+        key: "jerseyNum",
+        label: "Jersey Num.",
+        type: "input",
+      },
+      {
         key: "name",
+        label: "Name",
         type: "input",
       },
       {
-        key: "shortName",
+        key: "picture",
+        label: "Picture",
         type: "input",
       },
       {
-        key: "contactName",
+        key: "weight",
+        label: "Weight",
         type: "input",
       },
       {
-        key: "contactTel",
+        key: "height",
+        label: "Height",
         type: "input",
       },
       {
-        key: "contactEmail",
+        key: "age",
+        label: "Age",
         type: "input",
-      },
-      {
-        key: "isActive",
-        type: "radio",
-        option: [
-          {
-            label: "Active",
-            value: true,
-          },
-          { label: "InActive", value: false },
-        ],
-      },
-      {
-        key: "remark",
-        type: "textarea",
       },
     ];
 
     return fld;
   }, []);
-
+  if (!item) {
+    return null;
+  }
   return (
     <FormModal
       fields={fields}
       formik={formik}
-      title={"add-merchant"}
+      title="Edit Player"
       open={open}
+      buttonLabel="Update"
       handleDrawerClose={handleDrawerClose}
     />
   );

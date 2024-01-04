@@ -88,7 +88,7 @@ const PlayerList = () => {
   const [openAddDrawer, setOpenAddDrawer] = useState<boolean>(false);
   const [openDetailDrawer, setOpenDetailDrawer] = useState<boolean>(false);
   const [openEditDrawer, setOpenEditDrawer] = useState<boolean>(false);
-  const [focusItem, setFocusItem] = useState<PlayerItemWithID | null>(null);
+  const [focusItem, setFocusItem] = useState<PlayerItemWithID>();
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(defaultPageSize);
   const [total, setTotal] = useState(0);
@@ -229,21 +229,25 @@ const PlayerList = () => {
         }}
         refreshList={fetchListData}
       />
-      <EditModal
-        open={openEditDrawer}
-        handleDrawerClose={() => {
-          setOpenEditDrawer(false);
-        }}
-        refreshList={fetchListData}
-        item={focusItem}
-      />
-      <DetailDrawer<PlayerItemWithID>
-        open={openDetailDrawer}
-        handleClose={() => {
-          setOpenDetailDrawer(false);
-        }}
-        item={focusItem}
-      />
+      {focusItem && (
+        <EditModal
+          open={openEditDrawer}
+          handleDrawerClose={() => {
+            setOpenEditDrawer(false);
+          }}
+          refreshList={fetchListData}
+          item={focusItem}
+        />
+      )}
+      {focusItem && (
+        <DetailDrawer<PlayerItemWithID>
+          open={openDetailDrawer}
+          handleClose={() => {
+            setOpenDetailDrawer(false);
+          }}
+          item={focusItem}
+        />
+      )}
     </>
   );
 };
