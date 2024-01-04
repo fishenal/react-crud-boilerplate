@@ -65,7 +65,6 @@ const CommonForm: <ItemInterface = { [key: string]: string }>(
           const labelKey = item.key;
           const stringLabelKey = String(item.key);
           const inputLabel = item.label || String(item.key);
-          console.log(formik.values[labelKey]);
           const error =
             formik.touched[labelKey] && Boolean(formik.errors[labelKey]);
           if (item.type === "input" || item.type === "textarea") {
