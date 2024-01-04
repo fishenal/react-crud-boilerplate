@@ -1,4 +1,9 @@
-import { PlayerListReq } from "../types";
+import {
+  PlayerAddReq,
+  PlayerDeleteReq,
+  PlayerEditReq,
+  PlayerListReq,
+} from "../types";
 
 export async function getPlayers({
   page = "0",
@@ -13,26 +18,42 @@ export async function getPlayers({
   const res = await fetch(`/playerApi?${queryStr}`, {
     method: "GET",
   });
-  // The return value is *not* serialized
-  // You can return Date, Map, Set, etc.
   if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
     throw new Error("Failed to fetch data");
   }
   return res.json();
 }
 
-export async function deletePlayer({ id }: { id: string }) {
+export async function deletePlayer({ id }: PlayerDeleteReq) {
   const res = await fetch(`/playerApi`, {
     method: "DELETE",
     body: JSON.stringify({
       id,
     }),
   });
-  // The return value is *not* serialized
-  // You can return Date, Map, Set, etc.
   if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
+    throw new Error("Failed to fetch data");
+  }
+  return res.json();
+}
+
+export async function addPlayer(params: PlayerAddReq) {
+  const res = await fetch(`/playerApi`, {
+    method: "POST",
+    body: JSON.stringify(params),
+  });
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+  return res.json();
+}
+
+export async function editPlayer(params: PlayerEditReq) {
+  const res = await fetch(`/playerApi/${params.id}`, {
+    method: "PUT",
+    body: JSON.stringify(params),
+  });
+  if (!res.ok) {
     throw new Error("Failed to fetch data");
   }
   return res.json();

@@ -15,10 +15,9 @@ import {
   Typography,
   Box,
   Card,
+  CardHeader,
 } from "@mui/material";
-// import FindInPageIcon from '@mui/icons-material/FindInPage'
-// project imports
-// assets
+import AddIcon from "@mui/icons-material/Add";
 
 import { defaultPageSize, pageSizeArr } from "./pageConfig";
 import { ActionMenu, IActionMenu } from "./ActionMenu";
@@ -75,6 +74,19 @@ export const DataTable: <ItemInterface>(
 
   return (
     <Card>
+      <CardHeader
+        title={title}
+        action={
+          <Button
+            variant="contained"
+            size="small"
+            onClick={handleAdd}
+            endIcon={<AddIcon />}
+          >
+            Add Player
+          </Button>
+        }
+      />
       {/* table */}
       <TableContainer>
         <Table sx={{ minWidth: 750 }} stickyHeader>

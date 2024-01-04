@@ -54,7 +54,9 @@ export interface PlayerListReq {
 
 export interface PlayerAddReq extends PlayerItem {}
 
-export interface PlayerEditReq extends PlayerItem {}
+export interface PlayerEditReq extends PlayerItem {
+  id: string;
+}
 export interface PlayerDeleteReq {
   id: string;
 }

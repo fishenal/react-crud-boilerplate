@@ -1,6 +1,8 @@
 "use client";
 import { AppBar, Box, Grid, Toolbar, Typography } from "@mui/material";
 import { SideNav } from "./SideNav";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 export default function DashboardLayout({
   children, // will be a page or nested layout
@@ -22,7 +24,9 @@ export default function DashboardLayout({
             <SideNav />
           </Grid>
           <Grid item xs={10}>
-            {children}
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              {children}
+            </LocalizationProvider>
           </Grid>
         </Grid>
       </Box>

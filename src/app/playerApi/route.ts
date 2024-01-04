@@ -37,23 +37,34 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: Request) {
-  return {
-    req: "post",
-  };
-}
-
-export async function PUT(request: Request) {
-  return {
-    req: "put",
-  };
-}
-
-export async function DELETE(request: Request) {
+  const success = Math.random() > 0.5;
   return NextResponse.json({
     status: 200,
     data: {
-      code: Math.random() > 0.5 ? 0 : 500,
-      message: "success",
+      code: success ? 0 : 500,
+      message: success ? "success" : "failed",
+    },
+  });
+}
+
+export async function PUT(request: Request) {
+  const success = Math.random() > 0.5;
+  return NextResponse.json({
+    status: 200,
+    data: {
+      code: success ? 0 : 500,
+      message: success ? "success" : "failed",
+    },
+  });
+}
+
+export async function DELETE(request: Request) {
+  const success = Math.random() > 0.5;
+  return NextResponse.json({
+    status: 200,
+    data: {
+      code: success ? 0 : 500,
+      message: success ? "success" : "failed",
     },
   });
 }

@@ -16,10 +16,11 @@ import { red } from "@mui/material/colors";
 import { FormikProps } from "formik";
 import { OptionObj } from "./types";
 import { BootstrapInput } from "./BootstrapInput";
-
+import { DatePicker } from "@mui/x-date-pickers";
 export interface IField<ItemInterface = { [key: string]: string }> {
   key: keyof ItemInterface;
-  type: "input" | "textarea" | "select" | "mul-select";
+  label?: string;
+  type: "input" | "textarea" | "select" | "mul-select" | "date";
   option?: OptionObj[];
   required?: boolean;
 }
@@ -28,6 +29,7 @@ interface IProps<ItemInterface> {
   formik: FormikProps<ItemInterface>;
   fields: IField<ItemInterface>[];
   title: ReactNode;
+  mainButtonLabel?: ReactNode;
   gridValue?: 4 | 6 | 12;
   submitErrorMsg?: string;
 }
@@ -42,6 +44,7 @@ const CommonForm: <ItemInterface = { [key: string]: string }>(
   title,
   gridValue = 12,
   submitErrorMsg,
+  mainButtonLabel = "Search",
 }) => {
   const renderFormLabel = (stringLabelKey: string, nomb: boolean = false) => {
     return (
@@ -62,6 +65,7 @@ const CommonForm: <ItemInterface = { [key: string]: string }>(
         {fields.map((item) => {
           const labelKey = item.key;
           const stringLabelKey = String(item.key);
+          const inputLabel = item.label || String(item.key);
           const error =
             formik.touched[labelKey] && Boolean(formik.errors[labelKey]);
           if (item.type === "input" || item.type === "textarea") {
@@ -73,7 +77,7 @@ const CommonForm: <ItemInterface = { [key: string]: string }>(
                   error={error}
                   fullWidth
                 >
-                  {renderFormLabel(stringLabelKey, true)}
+                  {renderFormLabel(inputLabel, true)}
                   <BootstrapInput
                     fullWidth
                     multiline={item.type === "textarea"}
@@ -90,7 +94,30 @@ const CommonForm: <ItemInterface = { [key: string]: string }>(
               </Grid>
             );
           }
-
+          if (item.type === "date") {
+            return (
+              <Grid item xs={gridValue} key={stringLabelKey}>
+                <FormControl
+                  variant="standard"
+                  required={item.required}
+                  error={error}
+                  fullWidth
+                >
+                  {renderFormLabel(inputLabel)}
+                  <DatePicker
+                    reduceAnimations
+                    value={formik.values[labelKey]}
+                    onChange={(date) => {
+                      formik.setFieldValue(stringLabelKey, date, true);
+                    }}
+                  />
+                  <FormHelperText error={error}>
+                    <>{error && formik.errors[labelKey]}</>
+                  </FormHelperText>
+                </FormControl>
+              </Grid>
+            );
+          }
           if (item.type === "select") {
             return (
               <Grid item xs={gridValue} key={stringLabelKey}>
@@ -100,7 +127,7 @@ const CommonForm: <ItemInterface = { [key: string]: string }>(
                   error={error}
                   fullWidth
                 >
-                  {renderFormLabel(stringLabelKey, true)}
+                  {renderFormLabel(inputLabel, true)}
                   <Select
                     labelId={stringLabelKey}
                     value={formik.values[labelKey]}
@@ -136,7 +163,7 @@ const CommonForm: <ItemInterface = { [key: string]: string }>(
                   error={error}
                   fullWidth
                 >
-                  {renderFormLabel(stringLabelKey, true)}
+                  {renderFormLabel(inputLabel, true)}
                   <Select
                     labelId={stringLabelKey}
                     value={formik.values[labelKey]}
@@ -197,7 +224,7 @@ const CommonForm: <ItemInterface = { [key: string]: string }>(
             Reset
           </Button>
           <Button variant="contained" type="submit">
-            Search
+            {mainButtonLabel}
           </Button>
         </Grid>
       </Grid>

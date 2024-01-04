@@ -1,16 +1,14 @@
 // third party
-import { object, string, boolean } from "yup";
+import { object, string, number } from "yup";
 import { useFormik } from "formik";
 import { PlayerAddReq } from "./types";
 import { IField } from "@/common/form";
-
-// project imports
-// import { openSnackbar } from 'store/slices/snackbar'
-// import { useDispatch } from 'store'
-// import { ICreateMerchant, createMerchant } from 'apis/merchant'
-// import FormModal from 'ui-component/formModal'
 import FormModal from "@/common/formModal";
-// import { IField } from 'ui-component/form'
+import { addPlayer } from "./api/playersActions";
+import { SnackBarContext } from "@/common/snackBarContext/snackBarContext";
+import { useContext } from "react";
+import { TeamOptions } from "@/data/teamOptions";
+import dayjs from "dayjs";
 
 interface Props {
   open: boolean;
@@ -19,112 +17,109 @@ interface Props {
 }
 
 const validationSchema = object({
-  name: string().trim().max(80).required(),
-  shortName: string().trim().max(30).required(),
-  loginUserName: string().trim().max(30).required(),
-  isActive: boolean(),
-  contactName: string().trim().max(100).required(),
-  contactTel: string().trim().max(30).required(),
-  contactEmail: string().trim().email(),
-  remark: string().trim().max(1000),
+  position: string().trim().max(80).required(),
+  birthDate: string().trim().max(80).required(),
+  jerseyNum: number().max(1000).required(),
+  name: string().trim().max(100).required(),
+  picture: string().trim().max(100).required(),
+  country: string().trim().max(100).required(),
+  weight: number().max(250).required(),
+  height: number().max(250).required(),
+  age: number().max(120).required(),
 });
 
-// ==============================|| KANBAN BACKLOGS - ADD STORY ||============================== //
-
 const AddModal = ({ open, handleDrawerClose, refreshList }: Props) => {
-  // const dispatch = useDispatch()
+  const { handleOpen: handleSnackbarOpen } = useContext(SnackBarContext);
 
   const formik = useFormik<PlayerAddReq>({
     initialValues: {
+      position: "",
+      birthDate: "",
+      jerseyNum: 0,
       name: "",
-      shortName: "",
-      isActive: true,
-      loginUserName: "",
-      contactName: "",
-      contactTel: "",
-      contactEmail: "",
-      remark: "",
+      picture: "",
+      weight: 0,
+      height: 0,
+      country: "",
+      age: 0,
     },
     validationSchema,
     onSubmit: async (values) => {
-      // const res = await createMerchant(values);
-      // if (res.code === 0) {
-      //   dispatch(
-      //     openSnackbar({
-      //       open: true,
-      //       message: <FormattedMessage id="success" />,
-      //       variant: "alert",
-      //       alert: {
-      //         color: "success",
-      //       },
-      //       close: false,
-      //     })
-      //   );
-      //   handleDrawerClose();
-      //   refreshList();
-      // } else {
-      //   // TODO: fix all type of snackbar
-      //   dispatch(
-      //     openSnackbar({
-      //       open: true,
-      //       message: <FormattedMessage id="fail" />,
-      //       variant: "alert",
-      //       alert: {
-      //         color: "error",
-      //       },
-      //       close: true,
-      //     })
-      //   );
-      // }
+      const params = {
+        ...values,
+        birthDate: dayjs(values.birthDate).format("YYYY-MM-DD"),
+      };
+      const res = await addPlayer(params);
+      if (res.code === 0) {
+        handleSnackbarOpen({
+          message: "Add Success!",
+          severity: "success",
+        });
+        handleDrawerClose();
+        refreshList();
+      } else {
+        handleSnackbarOpen({
+          message: "Add Failed!",
+          severity: "error",
+        });
+      }
     },
   });
   const fields: IField[] = [
     {
+      key: "position",
+      label: "Position",
+      type: "input",
+    },
+    {
+      key: "country",
+      label: "Country",
+      type: "select",
+      option: TeamOptions,
+    },
+    {
+      key: "birthDate",
+      label: "BirthDate",
+      type: "date",
+    },
+    {
+      key: "jerseyNum",
+      label: "Jersey Num.",
+      type: "input",
+    },
+    {
       key: "name",
+      label: "Name",
       type: "input",
     },
     {
-      key: "shortName",
+      key: "picture",
+      label: "Picture",
       type: "input",
     },
     {
-      key: "loginUserName",
+      key: "weight",
+      label: "Weight",
       type: "input",
     },
     {
-      key: "contactName",
+      key: "height",
+      label: "Height",
       type: "input",
     },
     {
-      key: "contactTel",
+      key: "age",
+      label: "Age",
       type: "input",
-    },
-    {
-      key: "contactEmail",
-      type: "input",
-    },
-    // {
-    //     key: 'isActive',
-    //     type: 'radio',
-    //     option: [
-    //         {
-    //             label: 'Active',
-    //             value: true,
-    //         },
-    //         { label: 'InActive', value: false },
-    //     ],
-    // },
-    {
-      key: "remark",
-      type: "textarea",
     },
   ];
   return (
     <FormModal
       fields={fields}
       formik={formik}
-      title={"add-merchant"}
+      title={"Add Player"}
       open={open}
+      buttonLabel="Add"
       handleDrawerClose={handleDrawerClose}
     />
   );

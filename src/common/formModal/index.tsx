@@ -12,6 +12,7 @@ interface IProps {
   formik: any;
   fields: IField[];
   title: ReactNode;
+  buttonLabel?: ReactNode;
 }
 
 // ==============================|| KANBAN BACKLOGS - ADD STORY ||============================== //
@@ -22,6 +23,7 @@ const FormModal: (props: IProps) => ReactElement = ({
   formik,
   fields,
   title,
+  buttonLabel,
 }) => {
   return (
     <Drawer
@@ -47,7 +49,12 @@ const FormModal: (props: IProps) => ReactElement = ({
     >
       {open && (
         <Box sx={{ p: 3 }}>
-          <CommonForm formik={formik} title={title} fields={fields} />
+          <CommonForm
+            formik={formik}
+            title={title}
+            fields={fields}
+            mainButtonLabel={buttonLabel}
+          />
         </Box>
       )}
     </Drawer>
