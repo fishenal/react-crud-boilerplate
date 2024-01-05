@@ -9,6 +9,9 @@ import {
   FormLabel,
   Checkbox,
   FormControl,
+  Divider,
+  Box,
+  Chip,
 } from "@mui/material";
 // project imports
 import { ReactElement, ReactNode } from "react";
@@ -21,6 +24,7 @@ import dayjs from "dayjs";
 export interface IField<ItemInterface = { [key: string]: string }> {
   key: keyof ItemInterface;
   label?: string;
+  helper?: string;
   type: "input" | "textarea" | "select" | "mul-select" | "date";
   option?: OptionObj[];
   required?: boolean;
@@ -65,6 +69,7 @@ const CommonForm: <ItemInterface = { [key: string]: string }>(
           const labelKey = item.key;
           const stringLabelKey = String(item.key);
           const inputLabel = item.label || String(item.key);
+          const inputHelper = item.helper || null;
           const error =
             formik.touched[labelKey] && Boolean(formik.errors[labelKey]);
           if (item.type === "input" || item.type === "textarea") {
@@ -86,6 +91,7 @@ const CommonForm: <ItemInterface = { [key: string]: string }>(
                     required={item.required}
                     onBlur={formik.handleBlur}
                   />
+                  <FormHelperText>{inputHelper}</FormHelperText>
                   <FormHelperText error={error}>
                     <>{error && formik.errors[labelKey]}</>
                   </FormHelperText>
@@ -110,6 +116,7 @@ const CommonForm: <ItemInterface = { [key: string]: string }>(
                       formik.setFieldValue(stringLabelKey, date, true);
                     }}
                   />
+                  <FormHelperText>{inputHelper}</FormHelperText>
                   <FormHelperText error={error}>
                     <>{error && formik.errors[labelKey]}</>
                   </FormHelperText>
@@ -146,6 +153,7 @@ const CommonForm: <ItemInterface = { [key: string]: string }>(
                         );
                       })}
                   </Select>
+                  <FormHelperText>{inputHelper}</FormHelperText>
                   <FormHelperText error={error}>
                     <>{error && formik.errors[labelKey]}</>
                   </FormHelperText>
@@ -154,6 +162,10 @@ const CommonForm: <ItemInterface = { [key: string]: string }>(
             );
           }
           if (item.type === "mul-select") {
+            const mulValues: Array<string> = formik.values[
+              labelKey
+            ] as Array<string>;
+            const options = item.option || [];
             return (
               <Grid item xs={gridValue} key={stringLabelKey}>
                 <FormControl
@@ -165,33 +177,75 @@ const CommonForm: <ItemInterface = { [key: string]: string }>(
                   {renderFormLabel(inputLabel, true)}
                   <Select
                     labelId={stringLabelKey}
-                    value={formik.values[labelKey]}
+                    value={mulValues}
                     multiple
                     name={stringLabelKey}
                     onChange={formik.handleChange}
-                    renderValue={(selected) =>
-                      //@ts-ignore
-                      selected.join(", ")
-                    }
+                    renderValue={(selected) => {
+                      return (
+                        <Box
+                          sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}
+                        >
+                          {selected.map((value) => {
+                            if (!item.option) {
+                              return null;
+                            }
+                            const label = item.option
+                              ? item.option.find((item) => item.value === value)
+                                  ?.label
+                              : "";
+                            return <Chip key={value} label={label} />;
+                          })}
+                        </Box>
+                      );
+                    }}
                     input={<BootstrapInput />}
                   >
-                    {item.option &&
-                      item.option.map((opt) => {
-                        return (
-                          <MenuItem value={String(opt.value)} key={opt.label}>
-                            <Checkbox
-                              checked={
-                                formik.values[
-                                  labelKey
-                                  //@ts-ignore
-                                ].indexOf(String(opt.value)) > -1
-                              }
-                            />
-                            {opt.label}
-                          </MenuItem>
-                        );
-                      })}
+                    <MenuItem
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (
+                          mulValues.length > 0 &&
+                          mulValues.length <= options.length
+                        ) {
+                          formik.setFieldValue(stringLabelKey, []);
+                        } else {
+                          formik.setFieldValue(
+                            stringLabelKey,
+                            item.option?.map((item) => item.value)
+                          );
+                        }
+                      }}
+                    >
+                      <Checkbox
+                        indeterminate={
+                          mulValues.length > 0 &&
+                          mulValues.length < options.length
+                        }
+                        checked={
+                          mulValues.length > 0 &&
+                          mulValues.length === options.length
+                        }
+                        size="small"
+                      />
+                      {mulValues.length > 0 &&
+                      mulValues.length <= options.length
+                        ? "Clear All"
+                        : "Select All"}
+                    </MenuItem>
+                    <Divider />
+                    {options.map((opt) => {
+                      return (
+                        <MenuItem
+                          value={String(opt.value)}
+                          key={String(opt.value)}
+                        >
+                          {opt.label}
+                        </MenuItem>
+                      );
+                    })}
                   </Select>
+                  <FormHelperText>{inputHelper}</FormHelperText>
                   <FormHelperText error={error}>
                     <>{error && formik.errors[labelKey]}</>
                   </FormHelperText>
